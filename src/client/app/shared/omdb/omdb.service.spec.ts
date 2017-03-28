@@ -4,18 +4,18 @@ import { MockBackend } from '@angular/http/testing';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ContactService, Contact } from './index';
+import { OmdbService, Omdb } from './index';
 
 export function main() {
   describe('Contact Service', () => {
-    let contactService: ContactService;
+    let contactService: OmdbService;
     let mockBackend: MockBackend;
 
     beforeEach(() => {
 
       TestBed.configureTestingModule({
         providers: [
-          ContactService,
+          OmdbService,
           MockBackend,
           BaseRequestOptions,
           {
@@ -28,7 +28,7 @@ export function main() {
     });
 
     it('should return an Observable when get called', async(() => {
-      expect(TestBed.get(ContactService).get()).toEqual(jasmine.any(Observable));
+      expect(TestBed.get(OmdbService).get()).toEqual(jasmine.any(Observable));
     }));
 
     it('should resolve to a contact when get called', async(() => {
