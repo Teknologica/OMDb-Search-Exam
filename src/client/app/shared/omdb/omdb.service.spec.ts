@@ -8,7 +8,7 @@ import { OmdbService, Omdb } from './index';
 
 export function main() {
   describe('Contact Service', () => {
-    let contactService: OmdbService;
+    let omdbService: OmdbService;
     let mockBackend: MockBackend;
 
     beforeEach(() => {
@@ -28,37 +28,38 @@ export function main() {
     });
 
     it('should return an Observable when get called', async(() => {
-      expect(TestBed.get(OmdbService).get()).toEqual(jasmine.any(Observable));
+      expect(TestBed.get(OmdbService).search('test')).toEqual(jasmine.any(Observable));
     }));
 
-    it('should resolve to a contact when get called', async(() => {
+    it('should resolve to a omdb item when get called', async(() => {
 
-      let contactService = TestBed.get(ContactService);
+      let omdbService = TestBed.get(OmdbService);
       let mockBackend = TestBed.get(MockBackend);
-      contactService.clear();
       mockBackend.connections.subscribe((c: any) => {
-        c.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify([{
-            "type": 'Executive',
-            "name": 'Ann Brown',
-            "title": 'CEO',
-            "phone": '(512) 456-5555',
-            "ext": '',
-            "fax": "(512) 456-5555",
-            "email": "Executive"
-          }])})));
+        c.mockRespond(new Response(new ResponseOptions({
+          body: JSON.stringify(
+            {
+              Search: [
+                {
+                  'Title': 'V/H/S',
+                  'Year': '2012',
+                  'imdbID': 'CEO',
+                  'Type': 'Movie',
+                  'Poster': 'N/A'
+                }]
+            })
+        })));
       });
 
-      contactService.get().subscribe((data: any) => {
-        let contact: Contact = new Contact(
-          'Executive',
-          'Ann Brown',
+      omdbService.search('test').subscribe((data: Omdb[]) => {
+        let omdb: Omdb = new Omdb(
+          'V/H/S',
+          '2012',
           'CEO',
-          '(512) 456-5555',
-          '',
-          '(512) 456-5555',
-          'Executive');
-        let contactArr = new Array(contact);
-        expect(data).toEqual(contactArr);
+          'Movie',
+          'N/A');
+        let omdbArray = new Array(omdb);
+        expect(data).toEqual(omdbArray);
       });
     }));
   });

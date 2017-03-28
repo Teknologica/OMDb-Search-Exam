@@ -7,7 +7,8 @@ import {
 import { Observable } from 'rxjs/Observable';
 
 import { HomeComponent } from './home.component';
-import { ContactService } from '../shared/contact/index';
+import { OmdbService } from '../shared/omdb/index';
+import { Router } from '@angular/router';
 
 export function main() {
   describe('Home component', () => {
@@ -18,7 +19,8 @@ export function main() {
         imports: [FormsModule],
         declarations: [HomeComponent],
         providers: [
-          { provide: ContactService, useValue: new MockContactService() }
+          { provide: OmdbService, useValue: new MockOmdbService() },
+          { provide: Router, useValue: {} }
         ]
       });
 
@@ -32,49 +34,20 @@ export function main() {
             let fixture = TestBed.createComponent(HomeComponent);
             let homeInstance = fixture.debugElement.componentInstance;
             let homeDOMEl = fixture.debugElement.nativeElement;
-            let mockContactService = <MockContactService>fixture.debugElement.injector.get(ContactService);
-            let contactServiceSpy = spyOn(mockContactService, 'get').and.callThrough();
-
-            mockContactService.returnValue = [
-                  {
-                    'type': 'Executive',
-                    'name': 'Ann Brown',
-                    'title': 'CEO',
-                    'phone': '(512) 456-5555',
-                    'ext': '',
-                    'fax': '(512) 456-5555',
-                    'email': 'Executive'
-                  },
-                  {
-                    'type': 'Inmar AR',
-                    'name': 'Mary Smith',
-                    'title': 'Lorem Ipsum',
-                    'phone': '(512) 456-5555',
-                    'ext': '',
-                    'fax': '(512) 456-5555',
-                    'email': 'Inmar AR'
-                  }];
+            let mockOmdbService = <MockOmdbService>fixture.debugElement.injector.get(OmdbService);
+            let contactServiceSpy = spyOn(mockOmdbService, 'get').and.callThrough();
 
             fixture.detectChanges();
 
-            expect(homeInstance.contactService).toEqual(jasmine.any(MockContactService));
-            expect(homeDOMEl.querySelectorAll('tr').length).toEqual(3);
-            expect(contactServiceSpy.calls.count()).toBe(1);
-
-            homeInstance.name = 'Minko';
-            homeInstance.title = 'Minko';
-            homeInstance.addEntry();
-
-            fixture.detectChanges();
-
-            expect(homeDOMEl.querySelectorAll('tr').length).toEqual(4);
+            expect(homeInstance.omdbService).toEqual(jasmine.any(MockOmdbService));
+            expect(homeDOMEl.querySelectorAll('input').length).toEqual(1);
           });
 
       }));
   });
 }
 
-class MockContactService {
+class MockOmdbService {
 
   returnValue: any[];
 

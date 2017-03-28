@@ -8,9 +8,11 @@ import { Observable } from 'rxjs/Observable';
 
 import { DetailsComponent } from './details.component';
 import { OmdbService } from '../shared/omdb/index';
+import { ActivatedRoute } from '@angular/router';
+
 
 export function main() {
-  describe('Home component', () => {
+  describe('Detail component', () => {
 
     beforeEach(() => {
 
@@ -18,7 +20,8 @@ export function main() {
         imports: [FormsModule],
         declarations: [DetailsComponent],
         providers: [
-          { provide: OmdbService, useValue: new MockContactService() }
+          { provide: OmdbService, useValue: new MockOmdbService() },
+          { provide: ActivatedRoute, useValue: {params: Observable.create((observer: any) => {return {id: 123} })}}
         ]
       });
 
@@ -32,53 +35,32 @@ export function main() {
             let fixture = TestBed.createComponent(DetailsComponent);
             let homeInstance = fixture.debugElement.componentInstance;
             let homeDOMEl = fixture.debugElement.nativeElement;
-            let mockContactService = <MockContactService>fixture.debugElement.injector.get(OmdbService);
+            let mockContactService = <MockOmdbService>fixture.debugElement.injector.get(OmdbService);
             let contactServiceSpy = spyOn(mockContactService, 'get').and.callThrough();
 
-            mockContactService.returnValue = [
-                  {
-                    'type': 'Executive',
-                    'name': 'Ann Brown',
-                    'title': 'CEO',
-                    'phone': '(512) 456-5555',
-                    'ext': '',
-                    'fax': '(512) 456-5555',
-                    'email': 'Executive'
-                  },
-                  {
-                    'type': 'Inmar AR',
-                    'name': 'Mary Smith',
-                    'title': 'Lorem Ipsum',
-                    'phone': '(512) 456-5555',
-                    'ext': '',
-                    'fax': '(512) 456-5555',
-                    'email': 'Inmar AR'
-                  }];
-
             fixture.detectChanges();
 
-            expect(homeInstance.contactService).toEqual(jasmine.any(MockContactService));
-            expect(homeDOMEl.querySelectorAll('tr').length).toEqual(3);
-            expect(contactServiceSpy.calls.count()).toBe(1);
-
-            homeInstance.name = 'Minko';
-            homeInstance.title = 'Minko';
-            homeInstance.addEntry();
-
-            fixture.detectChanges();
-
-            expect(homeDOMEl.querySelectorAll('tr').length).toEqual(4);
+            expect(homeInstance.omdbService).toEqual(jasmine.any(MockOmdbService));
+            expect(homeDOMEl.querySelectorAll('h3').length).toEqual(0);
           });
 
       }));
   });
 }
 
-class MockContactService {
+
+class MockOmdbService {
 
   returnValue: any[];
 
   get(): Observable<string[]> {
+    return Observable.create((observer: any) => {
+      observer.next(this.returnValue);
+      observer.complete();
+    });
+  }
+
+  getIndividual(item: any): Observable<string[]> {
     return Observable.create((observer: any) => {
       observer.next(this.returnValue);
       observer.complete();

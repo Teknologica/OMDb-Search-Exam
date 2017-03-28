@@ -3,7 +3,7 @@ import { OmdbService, Omdb } from '../shared/omdb/index';
 import { ActivatedRoute } from '@angular/router';
 
 /**
- * This class represents the lazy loaded HomeComponent.
+ * This class represents the lazy loaded DetailsComponent.
  */
 @Component({
   moduleId: module.id,
@@ -23,7 +23,7 @@ export class DetailsComponent implements OnInit {
     'Runtime'
   ];
   /**
-   * Creates an instance of the HomeComponent with the injected
+   * Creates an instance of the DetailsComponent with the injected
    * OmdbService.
    *
    * @param {OmdbService} omdbService - The injected OmdbService.
@@ -34,20 +34,13 @@ export class DetailsComponent implements OnInit {
    * Get the names OnInit
    */
   ngOnInit() {
-    //this.getItems();
     this.route.params.subscribe(params => {
-      let imdbId = params.id;
+      let imdbId = params['id'];
       this.omdbService.getIndividual(imdbId).subscribe(
         item => {
           this.movie = item;
-          console.log(item);
         }
       )
     });
   }
-
-  rowClicked(item: any){
-    console.log("clicked");
-  }
-
 }

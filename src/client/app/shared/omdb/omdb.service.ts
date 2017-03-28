@@ -53,21 +53,6 @@ export class OmdbService {
     return this.http.get(`http://www.omdbapi.com/?i=${imdbID}`)
       .map((res: Response) => {
         let json = res.json();
-        /*let searchItems = json.Search;
-        let omdbItems = new Array();
-        //Check if there are results returned
-        if (searchItems) {
-          for (let item of searchItems) {
-            let omdb = new Omdb(
-              item.Title,
-              item.Year,
-              item.imdbID,
-              item.Type,
-              item.Poster
-            );
-            omdbItems.push(omdb);
-          }
-        } */
         return json;
       })
       //              .do(data => console.log('server data:', data))  // debug

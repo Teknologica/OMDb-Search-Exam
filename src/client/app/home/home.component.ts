@@ -42,7 +42,6 @@ export class HomeComponent implements OnInit {
 
   rowClicked(item: Omdb){
     this.router.navigate(['/details', item.imdbID]);
-    console.log("clicked");
   }
 
 }
