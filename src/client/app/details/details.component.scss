@@ -2,7 +2,6 @@ $light-blue: rgb(75,169,223);
 $grey: rgb(203,203,203);
 
 h3 {
-  float: left;
   color: $light-blue;
 }
 
@@ -33,26 +32,5 @@ h3 {
       outline: none;
     }
 
-  }
-}
-
-.table {
-  .heading th {
-    color: $light-blue;
-    padding-top: 23px;
-    padding-bottom: 23px;
-    padding-left: 21px;
-  }
-  .table-row {
-    td {
-      padding-left: 21px;
-      vertical-align: middle;
-      cursor: pointer;
-      &.check-column input {
-        font-size: x-large;
-        vertical-align: middle;
-        padding-left: 0;
-      }
-    }
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OmdbService, Omdb } from '../shared/omdb/index';
+import { Router } from '@angular/router';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -22,7 +23,7 @@ export class HomeComponent implements OnInit {
    *
    * @param {OmdbService} omdbService - The injected OmdbService.
    */
-  constructor(public omdbService: OmdbService) { }
+  constructor(public omdbService: OmdbService, private router: Router) { }
 
   /**
    * Get the names OnInit
@@ -39,7 +40,8 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  rowClicked(item: any){
+  rowClicked(item: Omdb){
+    this.router.navigate(['/details', item.imdbID]);
     console.log("clicked");
   }
 

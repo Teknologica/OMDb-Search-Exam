@@ -14,7 +14,7 @@ export class OmdbService {
    * @param {Http} http - The injected Http.
    * @constructor
    */
-  constructor(private http: Http) {}
+  constructor(private http: Http) { }
 
   /**
    * Returns an Observable for the HTTP GET request for the JSON resource.
@@ -22,33 +22,62 @@ export class OmdbService {
    */
   search(param: string): Observable<Omdb[]> {
     return this.http.get(`http://www.omdbapi.com/?s=${param}`)
-                    .map((res: Response) => {
-                        let json = res.json();
-                        let searchItems = json.Search;
-                        let omdbItems = new Array();
-                        //Check if there are results returned
-                        if(searchItems) {
-                          for(let item of searchItems) {
-                            let omdb = new Omdb(
-                              item.Title,
-                              item.Year,
-                              item.imdbID,
-                              item.Type,
-                              item.Poster
-                            );
-                            omdbItems.push(omdb);
-                          }
-                        }
-                        return omdbItems;
-                      })
-    //              .do(data => console.log('server data:', data))  // debug
-                    .catch(this.handleError);
+      .map((res: Response) => {
+        let json = res.json();
+        let searchItems = json.Search;
+        let omdbItems = new Array();
+        //Check if there are results returned
+        if (searchItems) {
+          for (let item of searchItems) {
+            let omdb = new Omdb(
+              item.Title,
+              item.Year,
+              item.imdbID,
+              item.Type,
+              item.Poster
+            );
+            omdbItems.push(omdb);
+          }
+        }
+        return omdbItems;
+      })
+      //              .do(data => console.log('server data:', data))  // debug
+      .catch(this.handleError);
+  }
+
+   /**
+   * Returns an Observable for the HTTP GET request for the JSON resource.
+   * @return {string[]} The Observable for the HTTP request.
+   */
+  getIndividual(imdbID: string): Observable<any> {
+    return this.http.get(`http://www.omdbapi.com/?i=${imdbID}`)
+      .map((res: Response) => {
+        let json = res.json();
+        /*let searchItems = json.Search;
+        let omdbItems = new Array();
+        //Check if there are results returned
+        if (searchItems) {
+          for (let item of searchItems) {
+            let omdb = new Omdb(
+              item.Title,
+              item.Year,
+              item.imdbID,
+              item.Type,
+              item.Poster
+            );
+            omdbItems.push(omdb);
+          }
+        } */
+        return json;
+      })
+      //              .do(data => console.log('server data:', data))  // debug
+      .catch(this.handleError);
   }
 
   /**
     * Handle HTTP error
     */
-  private handleError (error: any) {
+  private handleError(error: any) {
     // In a real world app, we might use a remote logging infrastructure
     // We'd also dig deeper into the error to get a better message
     let errMsg = (error.message) ? error.message :
