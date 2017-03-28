@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactService, Contact } from '../shared/contact/index';
+import { OmdbService, Omdb } from '../shared/omdb/index';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -13,70 +13,34 @@ import { ContactService, Contact } from '../shared/contact/index';
 export class HomeComponent implements OnInit {
 
   errorMessage: string;
-  contacts: Contact[] = [];
-  type: String;
+  items: Omdb[] = [];
   name: String;
-  title: String;
-  phone: String;
-  ext: String;
-  fax: String;
-  email: String;
 
   /**
    * Creates an instance of the HomeComponent with the injected
-   * ContactService.
+   * OmdbService.
    *
-   * @param {ContactService} contactService - The injected ContactService.
+   * @param {OmdbService} omdbService - The injected OmdbService.
    */
-  constructor(public contactService: ContactService) { }
+  constructor(public omdbService: OmdbService) { }
 
   /**
    * Get the names OnInit
    */
   ngOnInit() {
-    this.getItems();
+    //this.getItems();
   }
 
-  /**
-  * Called when items are checked
-  */
-  checkItem(e: any, contact: Contact) {
-    contact.isChecked = e.target.checked;
+  onTitleChange($event: any){
+    let text = $event.target.value;
+    this.omdbService.search(text).subscribe(
+      items => this.items = items,
+      error => console.log(error)
+    );
   }
 
-  /**
-   * Handle the contactService observable
-   */
-  getItems() {
-    this.contactService.get()
-      .subscribe(
-      contacts => this.contacts = contacts,
-      error => this.errorMessage = <any>error
-      );
-  }
-
-  /**
-   * Removes an item from the contact list
-   */
-  removeItems() {
-    let returnContactsArr = this.contactService.removeItems(this.contacts);
-    this.contacts = returnContactsArr;
-  }
-
-  /**
-   * Adds an entry to the contact list
-   */
-  addEntry() {
-    let contact = new Contact(this.type, this.name, this.title, this.phone, this.ext, this.fax, this.email);
-    this.contacts.push(contact);
-    this.contactService.add(this.contacts);
-    this.type = "";
-    this.name = "";
-    this.title = "";
-    this.phone = "";
-    this.ext = "";
-    this.fax = "";
-    this.email = "";
+  rowClicked(item: any){
+    console.log("clicked");
   }
 
 }
