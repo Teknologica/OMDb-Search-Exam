@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="text-center">Find a Movie</h3>
+    </div>
+  </div>
+  <br>
+  <form>
+    <div class="form-group">
+      <label for="movieTitle">Title of Movie to Search For</label>
+      <input type="email" class="form-control" id="movieTitle" placeholder="Movie Title" (keyup)="onTitleChange($event)">
+    </div>
+  </form>
+  <br>
+  <div *ngIf="items.length > 0" class="table-responsive panel panel-default collapse in" id="table">
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr class="heading">
+          <th>Year</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items" class="table-row" (click)="rowClicked(item)">
+          <td>{{item.Year}}</td>
+          <td>{{item.Title}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
