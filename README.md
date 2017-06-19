@@ -1,6 +1,12 @@
 # OMDb-Search-Exam
 Search the OMDb API
 
+### Discontinued -- OMDb no longer free to use
+
+---
+
+### Archived Content Follows
+
 ## Task Details
 - Consume the [OMDb API](http://www.omdbapi.com/) to fetch the top 10 results matching your search query (JSON).
 - Create an interface with at least one input field to be used to search for movies by title.
